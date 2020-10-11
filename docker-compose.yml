@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./app/flask_app/static:/app/static
+      - ./app-upload:/app/flask_app/static/upload
+    depends_on:
+      - app
+
+  app:
+    build: app
+    volumes:
+      - ./app-upload:/app/flask_app/static/upload
+
+
+# ===== nginx
+# docker run --rm nginx cat /etc/nginx/nginx.conf > nginx/nginx.conf
+
+# docker-compose up -d nginx
+# docker-compose exec nginx nginx -s reload
