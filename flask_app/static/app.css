@@ -15,12 +15,15 @@ body {
 /* ========== /Reset ========== */
 
 /* ========== Header ========== */
-header {
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: fixed;
     top: 0;
     height: 48px;
     line-height: 48px;
-    background-color: #004B8B;
+    background-color: #464872;
     color: #fff;
     width: 100%;
     display: flex;
@@ -29,28 +32,112 @@ header {
     z-index: 10;
     padding: 0 12px;
 }
-header > div {
+#header > div {
     height: 48px;
     padding: 0 12px 0 8px;
 }
-header .logo {
+#header .logo {
     justify-content: flex-start;
     text-decoration: none;
+    padding-left: 50px;
 }
-header .logo > a {
+#header .logo > a {
     color: #fff;
     text-decoration: none;
 }
-header .search {
-    flex: 1 0 auto;
+
+#header .search {
+    /* flex: 1 0 auto; */
     justify-content: center;
+    height: 32px;
 }
-header .right {
+
+#header .search input{
+    width: 480px;
+    border-radius: 0;
+}
+
+#header .right {
     justify-content: flex-end;
 }
 /* ========== /Header ========== */
 
-/* ========== Content Tab ========== */
+/* ========== Main ========== */
+
+#main {
+    display: flex;
+}
+
+/* ========== /Main ========== */
+
+/* ========== Left Bar ========== */
+
+#left-bar {
+    width: 56px;
+    background-color: #333549;
+    padding-top: 48px;
+    height: 100vh;
+}
+
+/* ========== /Left Bar ========== */
+
+/* ========== Content ========== */
+
+#content {
+    width: 100%;
+    margin-top: 48px;
+    padding: 80px;
+}
+
+#content .tag-search {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 16px;
+    padding-left: 16px;
+}
+
+#content .tag-search .icon.search {
+    margin-right: 16px;
+    padding-bottom: 18px;
+}
+
+#content .checkboxes {
+    margin: 16px;
+}
+
+#content .checkboxes .checkbox{
+    margin-right: 24px;
+}
+
+#content .table-options {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+#doc-table .doc-title {
+    width: 35%;
+}
+
+#doc-table .status-label {
+    margin-left: 16px;
+}
+
+#doc-table .attandee {
+    display: flex;
+    align-items: center;
+}
+
+#doc-table .attandee .additional-attandee{
+    margin: 0
+}
+
+/* ========== /Content ========== */
+
+/* ========== Tab Content ========== */
 #tab-content > .tab {
     position: absolute;
     top: 48px;
@@ -69,13 +156,13 @@ header .right {
     border-style: solid;
     border-color: #bbb;
 }
-#content-1 {
+#tab-content-1 {
     left: 0;
 }
-#content-2 {
+#tab-content-2 {
     right: 0;
 }
-/* ========== /Content Tab ========== */
+/* ========== /Tab Content ========== */
 
 /* ========== Transcript ========== */
 .transcript-container {
@@ -97,9 +184,6 @@ header .right {
 .transcript span[data-time]:hover {
     background-color: #cff8ff;
 }
-.transcript span b {
-    background-color: #fffa67;
-}
 /* ========== /Transcript ========== */
 
 /* ========== Video ========== */
@@ -108,5 +192,19 @@ header .right {
 .video-js {
     width: 100%;
 }
-/* ========== Video ========== */
+/* ========== /Video ========== */
 
+/* ========== Create Minute ========== */
+
+#create-minute {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+}
+
+#create-minute button {
+    background-color: #464872;
+    color: #fff
+}
+
+/* ========== /Create Minute ========== */
