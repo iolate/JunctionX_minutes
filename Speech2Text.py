@@ -87,7 +87,7 @@ def Speech2Text(input_file, config):
             #    print("Error details: {}".format(cancellation_details.error_details))
             break
     
-    return results
+    return results, video.duration
 
 
 # Example

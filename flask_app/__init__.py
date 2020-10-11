@@ -34,7 +34,7 @@ def api_returns(f):
 
 @app.route('/')
 def index():
-	return render_template('upload.html')
+	return render_template('home.html')
 
 @app.route('/test')
 def test():
@@ -42,16 +42,21 @@ def test():
 	return redirect('/')
 
 def make_row(row):
-	scripts = json.loads(row['scripts'])
-	for script in scripts:
-		# escape
-		text = script['text'].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+	try:
+		scripts = json.loads(row['scripts'])
+		for script in scripts:
+			# escape
+			text = script['text'].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 		
-		for kp in script['key_phrases']:
-			text = text.replace(kp, '<b>{}</b>'.format(kp))
-		script['html'] = text
+			for kp in script['key_phrases']:
+				text = text.replace(kp, '<b>{}</b>'.format(kp))
+			script['html'] = text
+		row['scripts'] = scripts
+	except: pass
 	
-	row['scripts'] = scripts
+	from datetime import datetime
+	row['created'] = datetime.fromtimestamp(row['created_at']).strftime('%Y-%m-%d')
+	
 
 @app.route('/minutes/<int:idx>')
 def minutes_view(idx):
@@ -76,10 +81,29 @@ def upload():
 
 # ----------------------------------------
 
-@app.route('/ajax/minutes')
+@app.route('/ajax/minutes', methods=['GET', 'DELETE'])
 @api_returns
 def ajax_minutes():
-	cursor = get_db().cursor()
+	conn = get_db()
+	cursor = conn.cursor()
+	
+	if request.method == 'DELETE':
+		import os
+		
+		idx = request.values.get('idx')
+		cursor.execute('SELECT filename FROM `minutes` WHERE `idx` = ?;', (idx,))
+		row = cursor.fetchone()
+		if row is None:
+			return {'error': 'Not found'}
+		
+		fp = os.path.join(app.config.get('UPLOAD_DIR', 'upload'), row['filename'])
+		if os.path.exists(fp):
+			os.remove(fp)
+		
+		cursor.execute('DELETE FROM `minutes` WHERE `idx` = ?;', (idx,))
+		conn.commit()
+	
+	# GET, DELETE
 	cursor.execute('SELECT * FROM `minutes` WHERE 1 = 1;')
 	result = cursor.fetchall()
 	for row in result:
@@ -102,13 +126,19 @@ def ajax_upload():
 	
 	conn = get_db()
 	cursor = conn.cursor()
-	cursor.execute('INSERT INTO `minutes` VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);',
-		(file.filename, 'pending', filename, filesize, int(time.time()), 0, ''))
+	cursor.execute('INSERT INTO `minutes` VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);',
+		(file.filename, 0, 'pending', filename, filesize, int(time.time()), 0, ''))
 	conn.commit()
 	
 	# status: pending, processing, error, done
 	
-	return {'result': 'success'}
+	cursor.execute('SELECT * FROM `minutes` WHERE 1 = 1;')
+	result = cursor.fetchall()
+	for row in result:
+		make_row(row)
+	
+	return {'minutes': result}
+	#return {'result': 'success'}
 
 
 ##########################################################################################

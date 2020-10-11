@@ -12,6 +12,8 @@ body {
     text-align: left;
     background-color: #fff;
 }
+
+[v-cloak] { display: none; }
 /* ========== /Reset ========== */
 
 /* ========== Header ========== */
@@ -118,6 +120,10 @@ body {
     margin-bottom: 32px;
 }
 
+#doc-table a {
+	color: #000;
+}
+
 #doc-table .doc-title {
     width: 35%;
 }
@@ -126,18 +132,27 @@ body {
     margin-left: 16px;
 }
 
-#doc-table .attandee {
+#doc-table .attendee {
     display: flex;
     align-items: center;
 }
 
-#doc-table .attandee .additional-attandee{
+#doc-table .attendee .additional-attendee{
     margin: 0
 }
 
+#doc-table .disabled {
+	pointer-events: none;
+    color: rgba(40,40,40,.3);
+}
 /* ========== /Content ========== */
 
 /* ========== Tab Content ========== */
+#tab-content {
+	position: relative;
+	width: 100%;
+}
+
 #tab-content > .tab {
     position: absolute;
     top: 48px;

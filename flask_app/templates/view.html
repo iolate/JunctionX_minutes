@@ -1,7 +1,13 @@
 {%- extends '_layout.html' %}
+{%- block page_head %}
+    <link href="https://vjs.zencdn.net/7.8.3/video-js.css" rel="stylesheet" />
+	<script src="https://vjs.zencdn.net/7.8.3/video.js"></script>
+{%- endblock %}
 {%- block content %}
+    <div id="main">
+        <div id="left-bar"></div>
 	<div id="tab-content">
-        <div id="content-1" class="tab">
+        <div id="tab-content-1" class="tab">
             <div class="transcript-container">
 	{%- for ts in row.scripts %}
                 <div class="transcript">
@@ -15,7 +21,7 @@
 	{%- endfor %}
             </div>
         </div>
-        <div id="content-2" class="tab">
+        <div id="tab-content-2" class="tab">
             <div class="video-container">
                 <video-js id="video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}">
                     <source src="/static/upload/{{ row.filename }}" type="video/mp4">
@@ -23,9 +29,10 @@
             </div>
         </div>
     </div>
+    </div>
     <script>
 $(function() {
-    $('#content-1').resizable({
+    $('#tab-content-1').resizable({
         handles: 'e',
         minWidth: 400,
         resize: function(e, ui) {
@@ -37,7 +44,7 @@ $(function() {
                 $(this).css({width: parentWidth - 400});
                 newWidth = 400;
             }
-            $('#content-2').css({width: newWidth});
+            $('#tab-content-2').css({width: newWidth});
         }
     });
     
