@@ -223,3 +223,15 @@ body {
 }
 
 /* ========== /Create Minute ========== */
+
+/* ========== Tutorial popup ========== */
+.tutorials {
+    display: flex;
+    justify-content: center;
+}
+
+.tutorials img {
+    height: 400px;
+    width: auto;
+}
+/* ========== /Tutorial popup ========== */

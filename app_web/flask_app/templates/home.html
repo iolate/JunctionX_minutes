@@ -112,6 +112,63 @@
 				<i class="icon plus"></i>
 			</button>
 		</div>
+		
+	<div class="ui coupled modal modal1">
+        <i class="close icon"></i>
+        <div class="image content tutorials">
+            <img src="static/images/tutorials/1.jpg" alt="">
+        </div>
+        <div class="actions">
+            <div class="ui primary button">Next</div>
+        </div>
+    </div>
+    <div class="ui coupled modal modal2">
+        <i class="close icon"></i>
+        <div class="image content tutorials">
+            <img src="static/images/tutorials/2.jpg" alt="">
+        </div>
+        <div class="actions">
+            <div class="ui primary button">Next</div>
+        </div>
+    </div>
+    <div class="ui coupled modal modal3">
+        <i class="close icon"></i>
+        <div class="image content tutorials">
+            <img src="static/images/tutorials/3.jpg" alt="">
+        </div>
+        <div class="actions">
+            <div class="ui primary button">Next</div>
+        </div>
+    </div>
+    <div class="ui coupled modal modal4">
+        <i class="close icon"></i>
+        <div class="image content tutorials">
+            <img src="static/images/tutorials/4.jpg" alt="">
+        </div>
+        <div class="actions">
+            <div class="ui primary button">Next</div>
+        </div>
+    </div>
+    <div class="ui coupled modal modal5">
+        <i class="close icon"></i>
+        <div class="image content tutorials">
+            <img src="static/images/tutorials/5.jpg" alt="">
+        </div>
+        <div class="actions">
+            <div class="ui primary cancel button">Thank You!</div>
+        </div>
+    </div>
+    <script>
+        $('.coupled.modal').modal({
+            allowMultiple: false
+        });
+        $('.modal.modal1').modal('show');
+        $('.modal.modal2').modal('attach events', '.modal.modal1 .button');
+        $('.modal.modal3').modal('attach events', '.modal.modal2 .button');
+        $('.modal.modal4').modal('attach events', '.modal.modal3 .button');
+        $('.modal.modal5').modal('attach events', '.modal.modal4 .button');
+        
+    </script>
     </div>
     <script>
 var app = new Vue({
