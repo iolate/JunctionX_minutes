@@ -1,0 +1,4 @@
+flask
+azure-ai-textanalytics
+azure-cognitiveservices-speech
+moviepy

@@ -1,0 +1,36 @@
+{%- extends '_layout.html' %}
+{%- block content %}
+	<div style="margin-top: 50px;">
+		<form name="uploadForm" method="POST" enctype="multipart/form-data">
+			<input type="file" name="file">
+			<input type="submit" value="업로드">
+		</form>
+		<button class="btn" id="btn-upload">업로드</button>
+	</div>
+	<div>
+		<ul>
+{%- for minute in minutes %}
+			<li>
+				{{ minute['name'] }}
+			</li>
+{%- endfor %}
+		</ul>
+	</div>
+    <script>
+$(function() {
+	$('#btn-upload').on('click', function() {
+		var formData = new FormData(document.uploadForm);
+		$.ajax({
+			type: 'POST', url: '/upload', dataType: 'json',
+			data: formData, processData: false, contentType: false,
+			success: function(data) {
+				
+			}, error: function(xhr, status) {
+				console.log(xhr);
+				alert('오류');
+			}
+		}
+	});
+});
+    </script>
+{%- endblock %}

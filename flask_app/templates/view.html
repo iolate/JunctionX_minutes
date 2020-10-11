@@ -1,0 +1,50 @@
+{%- extends '_layout.html' %}
+{%- block content %}
+	<div id="tab-content">
+        <div id="content-1" class="tab">
+            <div class="transcript-container">
+	{%- for ts in row.scripts %}
+                <div class="transcript">
+                    <div class="left">
+                        <span data-time="{{ ts.seconds }}">{{ ts.timestr }}</span>
+                    </div>
+                    <div class="content">
+                        <span data-time="{{ ts.seconds }}">{{ ts.html | safe }}</span>
+                    </div>
+                </div>
+	{%- endfor %}
+            </div>
+        </div>
+        <div id="content-2" class="tab">
+            <div class="video-container">
+                <video-js id="video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}">
+                    <source src="/static/upload/{{ row.filename }}" type="video/mp4">
+                </video-js>
+            </div>
+        </div>
+    </div>
+    <script>
+$(function() {
+    $('#content-1').resizable({
+        handles: 'e',
+        minWidth: 400,
+        resize: function(e, ui) {
+            var self = $(this).data("ui-resizable"), o = self.options, os = self.originalSize, op = self.originalPosition;
+            var parentWidth = $(this).parent().width();
+            var newWidth = parentWidth - self.size.width;
+            if (newWidth < 400) {
+                $(this).resizable('widget').trigger('mouseup');
+                $(this).css({width: parentWidth - 400});
+                newWidth = 400;
+            }
+            $('#content-2').css({width: newWidth});
+        }
+    });
+    
+    $('.transcript-container').on('click', 'span[data-time]', function() {
+        var time = $(this).data('time');
+        videojs('video').currentTime(time);
+    });
+});
+    </script>
+{%- endblock %}

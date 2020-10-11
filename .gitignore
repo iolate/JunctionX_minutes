@@ -1,0 +1,6 @@
+__pycache__
+.DS_Store
+/upload
+*.db
+/venv
+flask_app/settings.cfg
