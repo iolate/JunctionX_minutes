@@ -1,6 +1,6 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
-os.environ['APP_SETTINGS'] = 'settings.cfg'
+os.environ['APP_SETTINGS'] = 'data/app_settings.cfg'
 
 from flask_app import app
 

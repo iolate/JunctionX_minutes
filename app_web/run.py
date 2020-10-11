@@ -1,5 +1,5 @@
 import os
-os.environ['APP_SETTINGS'] = 'settings.cfg'
+os.environ['APP_SETTINGS'] = 'data/app_settings.cfg'
 
 from flask_app import app
 

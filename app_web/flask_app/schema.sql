@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS `minutes` (
     `filesize` INTEGER,
     `created_at` INTEGER,
     `is_private` INTEGER,
+    `memo` TEXT,
     `scripts` TEXT
 );
 

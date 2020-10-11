@@ -41,7 +41,7 @@ def test():
 	flash('test')
 	return redirect('/')
 
-def make_row(row):
+def make_row(row, cursor):
 	try:
 		scripts = json.loads(row['scripts'])
 		for script in scripts:
@@ -57,6 +57,12 @@ def make_row(row):
 	from datetime import datetime
 	row['created'] = datetime.fromtimestamp(row['created_at']).strftime('%Y-%m-%d')
 	
+	try:
+		cursor.execute('SELECT `tag` FROM `minutes_tags` WHERE `minutes_idx` = ?', (row['idx'],))
+		row['tags'] = [row['tag'] for row in cursor.fetchall()]
+	except:
+		row['tags'] = []
+	
 
 @app.route('/minutes/<int:idx>')
 def minutes_view(idx):
@@ -67,7 +73,7 @@ def minutes_view(idx):
 	row = cursor.fetchone()
 	if row is None: return abort(404)
 	
-	make_row(row)
+	make_row(row, cursor)
 	
 	return render_template('view.html', row=row)
 
@@ -81,7 +87,40 @@ def upload():
 
 # ----------------------------------------
 
-@app.route('/ajax/minutes', methods=['GET', 'DELETE'])
+@app.route('/ajax/minutes/<int:idx>', methods=['POST'])
+@api_returns
+def ajax_minutes_update(idx):
+	conn = get_db()
+	cursor = conn.cursor()
+	
+	cursor.execute('SELECT filename FROM `minutes` WHERE `idx` = ?;', (idx,))
+	row = cursor.fetchone()
+	if row is None:
+		return {'error': 'Not found'}
+	
+	cmd = request.values.get('cmd')
+	if cmd == 'tags':
+		new_tags = set(request.values.get('tags', '').split(','))
+	
+		cursor.execute('SELECT `tag` FROM `minutes_tags` WHERE `minutes_idx` = ?;', (idx,))
+		tags = {row['tag'] for row in cursor.fetchall()}
+	
+		removed_tags = tags - new_tags
+		added_tags = new_tags - tags
+	
+		for tag in removed_tags:
+			cursor.execute('DELETE FROM `minutes_tags` WHERE `minutes_idx` = ? AND `tag` = ?;', (idx, tag))
+	
+		for tag in added_tags:
+			cursor.execute('INSERT INTO `minutes_tags` VALUES (NULL, ?, ?);', (idx, tag))
+	elif cmd == 'memo':
+		memo = request.values.get('memo', '')
+		cursor.execute('UPDATE `minutes` SET `memo` = ? WHERE `idx` = ?;', (memo, idx))
+	
+	conn.commit()
+	return {'result': 'success'}
+
+@app.route('/ajax/minutes', methods=['GET', 'POST', 'DELETE'])
 @api_returns
 def ajax_minutes():
 	conn = get_db()
@@ -107,7 +146,7 @@ def ajax_minutes():
 	cursor.execute('SELECT * FROM `minutes` WHERE 1 = 1;')
 	result = cursor.fetchall()
 	for row in result:
-		make_row(row)
+		make_row(row, cursor)
 	
 	return {'minutes': result}
 
@@ -126,8 +165,8 @@ def ajax_upload():
 	
 	conn = get_db()
 	cursor = conn.cursor()
-	cursor.execute('INSERT INTO `minutes` VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);',
-		(file.filename, 0, 'pending', filename, filesize, int(time.time()), 0, ''))
+	cursor.execute('INSERT INTO `minutes` VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+		(file.filename, 0, 'pending', filename, filesize, int(time.time()), 0, '', ''))
 	conn.commit()
 	
 	# status: pending, processing, error, done
@@ -135,7 +174,7 @@ def ajax_upload():
 	cursor.execute('SELECT * FROM `minutes` WHERE 1 = 1;')
 	result = cursor.fetchall()
 	for row in result:
-		make_row(row)
+		make_row(row, cursor)
 	
 	return {'minutes': result}
 	#return {'result': 'success'}

@@ -12,7 +12,7 @@ def load_config(filename):
 		exec(compile(config_file.read(), filename, "exec"), d.__dict__)
 	
 	return {key: getattr(d, key) for key in dir(d) if key.isupper()}
-config = load_config('flask_app/settings.cfg')
+config = load_config('data/azure_settings.cfg')
 
 def get_db():
 	import sqlite3
@@ -75,4 +75,4 @@ def loop():
 
 if __name__ == '__main__':
 	pass
-	#loop()
+	loop()

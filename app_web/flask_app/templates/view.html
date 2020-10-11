@@ -2,6 +2,9 @@
 {%- block page_head %}
     <link href="https://vjs.zencdn.net/7.8.3/video-js.css" rel="stylesheet" />
 	<script src="https://vjs.zencdn.net/7.8.3/video.js"></script>
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" />
+	<script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
 {%- endblock %}
 {%- block content %}
     <div id="main">
@@ -26,6 +29,15 @@
                 <video-js id="video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}">
                     <source src="/static/upload/{{ row.filename }}" type="video/mp4">
                 </video-js>
+            </div>
+            
+            <div class="tags" style="margin-top: 10px;">
+            	<h4>Tags</h4>
+            	<input id="ipt-tags" type="text" value="{{ row.tags | join(',') }}" placeholder="Tags...">
+            </div>
+            <div style="margin-top: 10px;">
+          		<h4>Memo</h4>
+            	<textarea id="ipt-memo" style="width: 100%; min-height: 120px; resize: vertical; font-size: 16px;">{{ row.memo }}</textarea>
             </div>
         </div>
     </div>
@@ -52,6 +64,44 @@ $(function() {
         var time = $(this).data('time');
         videojs('video').currentTime(time);
     });
+    
+    
+    const iptTags = document.getElementById('ipt-tags');
+	const choices1 = new Choices(iptTags, {
+		delimiter: ',',
+		editItems: true,
+		addItemFilter: (value) => {
+			return !$('#ipt-tags').val().split(',').includes(value);
+		}
+	});
+	iptTags.addEventListener('change', function(event) {
+		var value = event.target.value;
+		$.ajax({
+			type: 'POST', url: '/ajax/minutes/{{ row.idx }}', dataType: 'json',
+			data: {cmd: 'tags', tags: value},
+			success: function(resp) {
+				// do nothing
+			},
+			error: function(xhr, status) {
+				alert('오류 - 태그 저장에 실패하였습니다.');
+			}
+		});
+	});
+	
+	$('#ipt-memo').on('change', function() {
+		var value = this.value;
+		$.ajax({
+			type: 'POST', url: '/ajax/minutes/{{ row.idx }}', dataType: 'json',
+			data: {cmd: 'memo', memo: value},
+			success: function(resp) {
+				// do nothing
+			},
+			error: function(xhr, status) {
+				alert('오류 - 메모 저장에 실패하였습니다.');
+			}
+		});
+	});
+	
 });
     </script>
 {%- endblock %}

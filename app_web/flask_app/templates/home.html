@@ -62,27 +62,27 @@
                 			<div class="ui horizontal label status-label"
                 				:class="{'red': min.status == 'error', 'yellow': min.status == 'pending', 'green': min.status == 'processing'}">{{ min.status }}</div>
                 		</td>
-                		<td></td>
+                		<td>
+                			<a class="ui label" v-for="tag in min.tags">{{ tag }}</a>
+                		</td>
                 		<td>{{ min.created }}</td>
                 		<td>{{ min.video_duration }} secs</td>
                 		<td class="attendee"></td>
                 		<td class="center aligned"><a v-if="min.status != 'processing'" href="javascript:;" @click="deleteMinutes(min.idx)"><i class="delete icon"></i></a></td>
                 	</tr>
 {%- endraw %}
-
                     <tr class="disabled">
-                        <td>1</td>
+                        <td>-</td>
                         <td>
                             202010-Design Meeting
+                            <div class="ui yellow horizontal label status-label">sample</div>
                         </td>
                         <td>
                             <a class="ui label">
                                 Design Ideation
-                                <i class="delete icon"></i>
                             </a>
                             <a class="ui label">
                                 Progress
-                                <i class="delete icon"></i>
                             </a>
                         </td>
                         <td>01/01/2020</td>
@@ -99,86 +99,6 @@
                         </td>
                         <td class="center aligned"><i class="delete icon"></i></td>
                     </tr>
-{#-
-                    <tr class="disabled">
-                        <td>1</td>
-                        <td>
-                            202010-Design Meeting
-                            <div class="ui green horizontal label status-label">Processing</div>
-                        </td>
-                        <td>
-
-                        </td>
-                        <td>01/01/2020</td>
-                        <td>2 hours</td>
-                        <td class="attandee">
-                            <img class="ui avatar image" src="static/images/jiyoon.jpeg">
-                            <img class="ui avatar image" src="static/images/daeseong.jpeg">
-                            <img class="ui avatar image" src="static/images/taeyoon.png">
-                            <div class="ui circular labels">
-                                <a class="ui label additional-attandee">
-                                    +2
-                                </a>
-                            </div>
-                        </td>
-                        <td class="center aligned"><i class="delete icon"></i></td>
-                    </tr>
-                    <tr class="disabled">
-                        <td>2</td>
-                        <td>
-                            202010-Design Meeting
-                            <div class="ui yellow horizontal label status-label">Pending</div>
-                        </td>
-                        <td>
-                            <!-- <a class="ui label">
-                                Design Ideation
-                                <i class="delete icon"></i>
-                            </a>
-                            <a class="ui label">
-                                Progress
-                                <i class="delete icon"></i>
-                            </a> -->
-                        </td>
-                        <td>01/01/2020</td>
-                        <td>2 hours</td>
-                        <td class="attandee">
-                            <img class="ui avatar image" src="static/images/jiyoon.jpeg">
-                            <img class="ui avatar image" src="static/images/taeyoon.png">
-                            <img class="ui avatar image" src="static/images/jiyoung.jpeg">
-                            <div class="ui circular labels">
-                                <a class="ui label additional-attandee">
-                                    +4
-                                </a>
-                            </div>
-                        </td>
-                        <td class="center aligned"><i class="delete icon"></i></td>
-                    </tr>
-                    <tr class="disabled">
-                        <td>3</td>
-                        <td>
-                            202010-Design Meeting
-                            <div class="ui red horizontal label status-label">Error</div>
-                        </td>
-                        <td>
-                            <!-- <a class="ui label">
-                                Design Ideation
-                                <i class="delete icon"></i>
-                            </a>
-                            <a class="ui label">
-                                Progress
-                                <i class="delete icon"></i>
-                            </a> -->
-                        </td>
-                        <td>01/01/2020</td>
-                        <td>2 hours</td>
-                        <td class="attandee">
-                            <img class="ui avatar image" src="static/images/jiyoon.jpeg">
-                            <img class="ui avatar image" src="static/images/daeseong.jpeg">
-                            <img class="ui avatar image" src="static/images/jiyoung.jpeg">
-                        </td>
-                        <td class="center aligned"><i class="delete icon"></i></td>
-                    </tr>
--#}
                 </tbody>
             </table>
         </div>
