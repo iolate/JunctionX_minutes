@@ -29,6 +29,8 @@ The online collaborating environment has been expanded due to the COVID-19. Espe
 
 ### Microsoft Azure 
 
+<img src="https://github.com/iolate/JunctionX_minutes/blob/main/pictures/System_Diagram.png?raw=true" width="500">
+
 ##### Auto-scripting online meeting
 "Minutes" automatically records the contents of online meeting video entered by the user to reduce the inconvenience of creating minutes. To implement is, we subscribed to **Speech Service of Azure Cognitive Services**. "Minutes" converts meeting videos entered by the user to audio and records the contents of the meeting in minutes with the time they speak.
 
