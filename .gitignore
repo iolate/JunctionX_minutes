@@ -4,3 +4,5 @@ __pycache__
 /venv
 app-data/database.db
 app-data/azure_settings.cfg
+app_web/flask_app/data
+app_azure/data
